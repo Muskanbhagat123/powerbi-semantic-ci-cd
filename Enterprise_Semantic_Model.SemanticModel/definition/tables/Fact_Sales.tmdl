@@ -18,10 +18,9 @@ table Fact_Sales
 		dataType: int64
 		isHidden
 		formatString: 0
-		lineageTag: 45c4101c-cdfb-4249-94d8-9b5225e4d9bb
+		lineageTag: 0a6e0e64-f655-46f9-b3a1-77e4ad3fc90a
 		summarizeBy: none
 		sourceColumn: ProductID
-
 		
 
 		annotation SummarizationSetBy = Automatic
