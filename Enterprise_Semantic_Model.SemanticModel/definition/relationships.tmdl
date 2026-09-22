@@ -1,0 +1,4 @@
+relationship AutoDetected_d820f2bf-24b9-4676-b632-80eef1a5beb4
+	fromColumn: Fact_Sales.ProductID
+	toColumn: Dim_Product.ProductID
+

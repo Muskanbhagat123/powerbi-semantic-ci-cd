@@ -1,0 +1,59 @@
+table Fact_Sales
+	lineageTag: 4ee65727-d44a-48c9-a5d0-40c24cef9944
+
+	measure 'Total Revenue' = SUM( Fact_Sales[Revenue] )
+		formatString: 0
+		lineageTag: ccb9bbb0-a6d4-4f17-86a3-fe8768f22c95
+
+	column SaleID
+		dataType: int64
+		formatString: 0
+		lineageTag: 602a352c-c6fb-47fd-8f2b-290364a155cd
+		summarizeBy: count
+		sourceColumn: SaleID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 45c4101c-cdfb-4249-94d8-9b5225e4d9bb
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 147fbfd2-cce7-4a35-8926-169c535cd771
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Revenue
+		dataType: int64
+		formatString: 0
+		lineageTag: 9168eb16-e718-418a-b205-c62127fd2d07
+		summarizeBy: sum
+		sourceColumn: Revenue
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Fact_Sales = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjQwVNJRAmEjAyMTA0NDUxDXyMBAKVYHJGsEkkHImoGYplA5Y1Sd5qg6TYBcY4SsBYhrCpSMBQA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [SaleID = _t, ProductID = _t, DateKey = _t, Revenue = _t]),
+				  #"Changed column type" = Table.TransformColumnTypes(Source, {{"SaleID", Int64.Type}, {"ProductID", Int64.Type}, {"DateKey", Int64.Type}, {"Revenue", Int64.Type}}, "en-US")
+				in
+				  #"Changed column type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

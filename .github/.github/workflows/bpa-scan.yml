@@ -1,0 +1,30 @@
+name: Semantic Model BPA Gatekeeper
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-bpa-validation:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download & Extract Tabular Editor 2 Portable (CLI)
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/TabularEditor/TabularEditor/releases/latest/download/TabularEditor.Portable.zip" -OutFile "TabularEditor.zip"
+          Expand-Archive -Path "TabularEditor.zip" -DestinationPath "./TE2"
+
+      - name: Run Best Practice Analyzer (BPA) Scan
+        shell: pwsh
+        run: |
+          $modelPath = "./Enterprise_Semantic_Model.SemanticModel/definition"
+          ./TE2/TabularEditor.exe "$modelPath" -B "./bpa-rules.json" -V
+
+      - name: Validation Status
+        if: success()
+        run: echo "Semantic Model passed all Best Practice rules!"
