@@ -7,9 +7,10 @@ table Fact_Sales
 
 	column SaleID
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 602a352c-c6fb-47fd-8f2b-290364a155cd
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: SaleID
 
 		annotation SummarizationSetBy = Automatic
@@ -21,21 +22,22 @@ table Fact_Sales
 		lineageTag: 0a6e0e64-f655-46f9-b3a1-77e4ad3fc90a
 		summarizeBy: none
 		sourceColumn: ProductID
-		
 
 		annotation SummarizationSetBy = Automatic
 
 	column DateKey
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 147fbfd2-cce7-4a35-8926-169c535cd771
-		summarizeBy: count
+		summarizeBy: none
 		sourceColumn: DateKey
 
 		annotation SummarizationSetBy = Automatic
 
 	column Revenue
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 9168eb16-e718-418a-b205-c62127fd2d07
 		summarizeBy: sum
@@ -55,4 +57,3 @@ table Fact_Sales
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
-
