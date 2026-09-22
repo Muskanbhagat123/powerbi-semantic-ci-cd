@@ -13,20 +13,26 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Install Tabular Editor 3 CLI
+      - name: Download & Extract Tabular Editor CLI
         shell: pwsh
         run: |
-          dotnet tool install -g TabularEditor3.Utils
+          Invoke-WebRequest -Uri "https://github.com/TabularEditor/TabularEditor/releases/latest/download/TabularEditor.Portable.zip" -OutFile "TabularEditor.zip"
+          Expand-Archive -Path "TabularEditor.zip" -DestinationPath "./TE"
 
-      - name: Run Best Practice Analyzer (BPA) on TMDL
+      - name: Run Best Practice Analyzer (BPA)
         shell: pwsh
         run: |
+          # Path to the Semantic Model definition folder
           $modelFolder = "./Enterprise_Semantic_Model.SemanticModel/definition"
           
-          # Run TE3 CLI Best Practice Analyzer with strict check
-          te3 scan "$modelFolder" -r "./bpa-rules.json" --fail-on-warning
+          # Run Tabular Editor BPA check
+          $output = ./TE/TabularEditor.exe "$modelFolder" -B "./bpa-rules.json" -V
+          Write-Output $output
+
+          # Fail if violations are found
+          if ($output -match "violation" -or $output -match "failed") {
+            Write-Error "Best Practice Analyzer rule violations detected!"
+            exit 1
+          } else {
+            Write-Host "All Best Practice rules passed successfully!"
+          }
