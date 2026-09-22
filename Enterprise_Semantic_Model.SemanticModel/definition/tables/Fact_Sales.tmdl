@@ -22,7 +22,7 @@ table Fact_Sales
 		summarizeBy: none
 		sourceColumn: ProductID
 
-		changedProperty = IsHidden
+		
 
 		annotation SummarizationSetBy = Automatic
 
